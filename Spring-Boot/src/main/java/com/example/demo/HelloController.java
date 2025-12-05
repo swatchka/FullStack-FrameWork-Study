@@ -2,18 +2,22 @@ package com.example.demo;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class HelloController {
 
-    @GetMapping("/")
-    public String hello() {
-        return "안녕하세요! 스프링 부트 성공입니다! 🎉";
-    }
-
-    // 기존 코드는 그대로 두고, 이 부분을 아래에 추가하세요
-    @GetMapping("/test")
-    public String test() {
-        return "여기는 테스트 페이지입니다! 🚀";
+    // 중요! origins = "*" 는 "누구든지 다 들어와도 좋다"는 뜻입니다.
+    // 포트 번호 신경 쓸 필요 없이 테스트할 때 가장 편한 설정입니다.
+    @CrossOrigin(origins = "*") 
+    @GetMapping("/api/test")
+    public Map<String, String> sayHello() {
+        HashMap<String, String> data = new HashMap<>();
+        data.put("message", "안녕하세요!");
+        data.put("author", "양윤성");
+        
+        return data;
     }
 }
