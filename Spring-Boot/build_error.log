@@ -1,0 +1,14 @@
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Could not open settings generic class cache for settings file 'C:\Users\yoons\OneDrive\¹®¼­\GitHub\FullStack-FrameWork-Study\Spring-Boot\settings.gradle' (C:\Users\yoons\.gradle\caches\8.5\scripts\cdvybhevj3bob2b50r6vc73w).
+> BUG! exception in phase 'semantic analysis' in source unit '_BuildScript_' Unsupported class file major version 69
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 863ms

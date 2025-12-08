@@ -7,8 +7,12 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
+
 java {
     sourceCompatibility = '11'
+}
+
+configurations {
 }
 
 repositories {
@@ -17,6 +21,16 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4' 
+    // ^ Modern maintained fork of Spring Cloud AWS for generic usage
+    
+    implementation 'me.paulschwarz:spring-dotenv:2.5.4'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

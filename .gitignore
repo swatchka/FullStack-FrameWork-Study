@@ -1,0 +1,21 @@
+# Spring Boot
+.gradle/
+build/
+bin/
+*.class
+
+# React
+node_modules/
+dist/
+.env
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# User Data
+Spring-Boot/data/
