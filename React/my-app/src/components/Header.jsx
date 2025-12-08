@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 function Header() {
     const location = useLocation();
     const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState("");
+
 
     // Hide header on login/signup pages if desired, or just hide search bar
     // Let's keep the header but maybe hide search on auth pages?
@@ -13,7 +13,7 @@ function Header() {
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/';
 
     if (isAuthPage) return null; // Or render a minimal header? Let's hide it for Gehenna immersion as auth pages are "entry".
-
+    const [searchQuery, setSearchQuery] = useState("");
     const handleSearch = (e) => {
         e.preventDefault();
         // Navigate to Gallery with query param

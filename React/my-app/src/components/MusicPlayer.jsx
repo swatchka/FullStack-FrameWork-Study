@@ -5,7 +5,8 @@ import { useLocation } from 'react-router-dom';
 const PLAYLIST = [
     { title: "It's going down", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm1.mp3" },
     { title: "Unwelcome School", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm2.mp3" },
-    { title: "Constant Moderato", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm3.mp3" }
+    { title: "Constant Moderato", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm3.mp3" },
+    { title: "Shelter", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm4.mp3" }
 ];
 
 function MusicPlayer() {
