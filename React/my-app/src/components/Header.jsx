@@ -44,7 +44,7 @@ function Header() {
                     letterSpacing: '2px',
                     textTransform: 'uppercase'
                 }}>
-                    Gehenna Archive
+                    ARCHIVE
                 </div>
             </Link>
 

@@ -2,13 +2,7 @@ package com.example.demo;
 
 import javax.persistence.*;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @Entity
-@Getter @Setter
-@NoArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "photo_id"}))
 public class PhotoLike {
 
@@ -23,8 +17,17 @@ public class PhotoLike {
     @JoinColumn(name = "photo_id")
     private Photo photo;
 
+    public PhotoLike() {}
+
     public PhotoLike(User user, Photo photo) {
         this.user = user;
         this.photo = photo;
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
+    public Photo getPhoto() { return photo; }
+    public void setPhoto(Photo photo) { this.photo = photo; }
 }

@@ -17,7 +17,6 @@ function LoginPage() {
             .then(async (res) => {
                 if (res.ok) {
                     const data = await res.json();
-                    alert("Welcome, Sensei! " + data.username);
                     localStorage.setItem("user", JSON.stringify(data));
                     navigate("/gallery");
                 } else {

@@ -39,7 +39,7 @@ public class PhotoController {
         }
         return photoRepository.findAllByOrderByUploadedAtDesc();
     }
-
+    // PhotoController.java: 반환받은 URL을 DB에 문자열로 저장합니다.
     @PostMapping
     public ResponseEntity<?> uploadPhoto(@RequestParam("file") MultipartFile file,
                                          @RequestParam("title") String title,
@@ -51,7 +51,7 @@ public class PhotoController {
         }
 
         // Upload to S3
-        String fileUrl = s3Service.uploadFile(file);
+        String fileUrl = s3Service.uploadFile(file); // S3에 업로드
         
         // Save full URL to DB as fileName
         Photo photo = new Photo(title, fileUrl, userOptional.get(), content);
