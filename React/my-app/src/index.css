@@ -103,3 +103,40 @@ input {
   border-color: var(--ba-cyan);
   box-shadow: var(--ba-halo);
 }
+
+@keyframes neon-pulse {
+  0% {
+    box-shadow: inset 0 0 20px rgba(215, 38, 56, 0.4), 0 0 10px rgba(215, 38, 56, 0.3);
+    border-color: var(--ba-cyan);
+  }
+
+  50% {
+    box-shadow: inset 0 0 40px rgba(215, 38, 56, 0.6), 0 0 20px rgba(155, 89, 182, 0.4);
+    border-color: var(--ba-purple);
+  }
+
+  100% {
+    box-shadow: inset 0 0 20px rgba(215, 38, 56, 0.4), 0 0 10px rgba(215, 38, 56, 0.3);
+    border-color: var(--ba-cyan);
+  }
+}
+
+.neon-screen-frame {
+  animation: neon-pulse 3s infinite alternate;
+  width: 100vw;
+  height: 100vh;
+  border: 12px solid var(--ba-cyan);
+  /* Thicker border for screen */
+  box-sizing: border-box;
+  /* Include border in width/height */
+  overflow: hidden;
+  /* Prevent scrollbars */
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* Flexbox settings to keep content centered */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

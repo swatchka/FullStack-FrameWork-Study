@@ -28,7 +28,7 @@ function SignupPage() {
     };
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className="neon-screen-frame">
             <div className="ba-card" style={{ padding: '40px', width: '400px', textAlign: 'center' }}>
                 <h1 style={{ marginBottom: '30px', color: 'var(--ba-cyan)' }}>REGISTER</h1>
                 <form onSubmit={handleSignup}>

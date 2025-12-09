@@ -26,6 +26,9 @@ public class Photo {
 
     private LocalDateTime uploadedAt;
 
+    @OneToMany(mappedBy = "photo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<PhotoLike> likes = new java.util.ArrayList<>();
+
     public Photo() {}
 
     public Photo(String title, String fileName, User author, String content) {
