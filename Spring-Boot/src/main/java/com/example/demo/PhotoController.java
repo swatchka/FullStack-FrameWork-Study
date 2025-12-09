@@ -30,7 +30,8 @@ public class PhotoController {
     private S3Service s3Service;
 
     @Autowired
-    private FileStorageService fileStorageService; // Keeping it for backward compatibility / fallback if needed (optional)
+    private FileStorageService fileStorageService; // Keeping it for backward compatibility / fallback if needed
+                                                   // (optional)
 
     @GetMapping
     public List<Photo> getAllPhotos(@RequestParam(value = "query", required = false) String query) {
@@ -39,12 +40,12 @@ public class PhotoController {
         }
         return photoRepository.findAllByOrderByUploadedAtDesc();
     }
-    // PhotoController.java: 반환받은 URL을 DB에 문자열로 저장합니다.
+
     @PostMapping
     public ResponseEntity<?> uploadPhoto(@RequestParam("file") MultipartFile file,
-                                         @RequestParam("title") String title,
-                                         @RequestParam("userId") Long userId,
-                                         @RequestParam(value = "content", required = false) String content) {
+            @RequestParam("title") String title,
+            @RequestParam("userId") Long userId,
+            @RequestParam(value = "content", required = false) String content) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
@@ -52,7 +53,7 @@ public class PhotoController {
 
         // Upload to S3
         String fileUrl = s3Service.uploadFile(file); // S3에 업로드
-        
+
         // Save full URL to DB as fileName
         Photo photo = new Photo(title, fileUrl, userOptional.get(), content);
         photoRepository.save(photo);
@@ -91,5 +92,32 @@ public class PhotoController {
         } catch (ObjectOptimisticLockingFailureException e) {
             return ResponseEntity.status(409).body("Concurrency conflict! Please try again.");
         }
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePhoto(@PathVariable Long id) {
+        if (!photoRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        // TODO: Validate user ownership (Skipping for now as per instructions for simplicity)
+        // Ideally: Check if current user owns the photo.
+        
+        photoRepository.deleteById(id);
+        return ResponseEntity.ok("Photo deleted successfully");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePhoto(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        Optional<Photo> photoOpt = photoRepository.findById(id);
+        if (photoOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Photo photo = photoOpt.get();
+        // Update fields if present
+        if (payload.containsKey("title")) photo.setTitle(payload.get("title"));
+        if (payload.containsKey("content")) photo.setContent(payload.get("content"));
+        
+        photoRepository.save(photo);
+        return ResponseEntity.ok(photo);
     }
 }

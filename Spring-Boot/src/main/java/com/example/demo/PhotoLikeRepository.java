@@ -7,4 +7,4 @@ public interface PhotoLikeRepository extends JpaRepository<PhotoLike, Long> {
     Optional<PhotoLike> findByUserAndPhoto(User user, Photo photo);
 }
 
-SELECT * FROM .. user = ? and photo = ?
+

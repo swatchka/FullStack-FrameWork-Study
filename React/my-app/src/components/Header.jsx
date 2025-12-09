@@ -6,6 +6,8 @@ function Header() {
     const navigate = useNavigate();
 
 
+    const [searchQuery, setSearchQuery] = useState("");
+
     // Hide header on login/signup pages if desired, or just hide search bar
     // Let's keep the header but maybe hide search on auth pages?
     // User requested "Search bar in the top center".
@@ -13,7 +15,6 @@ function Header() {
     const isAuthPage = location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/';
 
     if (isAuthPage) return null; // Or render a minimal header? Let's hide it for Gehenna immersion as auth pages are "entry".
-    const [searchQuery, setSearchQuery] = useState("");
     const handleSearch = (e) => {
         e.preventDefault();
         // Navigate to Gallery with query param
@@ -21,6 +22,13 @@ function Header() {
     };
 
     const user = JSON.parse(localStorage.getItem("user"));
+
+    const handleLogout = () => {
+        if (window.confirm("Are you sure you want to logout?")) {
+            localStorage.removeItem("user");
+            navigate("/login");
+        }
+    };
 
     return (
         <header style={{
@@ -71,14 +79,16 @@ function Header() {
                 </button>
             </form>
 
-            {/* Right Side: User Info & Write Button */}
+            {/* Right Side: User Info & Logout Button */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                 {user && <span style={{ fontWeight: 'bold', color: '#dfe6e9' }}>{user.username}</span>}
-                <Link to="/upload">
-                    <button className="ba-btn" style={{ fontSize: '0.9rem', padding: '8px 15px' }}>
-                        + Write
-                    </button>
-                </Link>
+                <button
+                    className="ba-btn"
+                    style={{ fontSize: '0.9rem', padding: '8px 15px', background: 'var(--ba-pink)' }}
+                    onClick={handleLogout}
+                >
+                    Logout
+                </button>
             </div>
         </header>
     );

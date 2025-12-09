@@ -1,16 +1,14 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.17'
+	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
-
-
 java {
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 }
 
 configurations {
@@ -23,10 +21,12 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4' 
-    // ^ Modern maintained fork of Spring Cloud AWS for generic usage
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3:3.2.1'
     
-    implementation 'me.paulschwarz:spring-dotenv:2.5.4'
+    // implementation 'me.paulschwarz:spring-dotenv:2.5.4' // Check compatibility or remove if not needed urgently, standard dotenv is better or use property
+    // For now, let's just stick to standard properties or see if it breaks. 
+    // Trying to keep it simple. Let's keep it but if it fails we remove.
+    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

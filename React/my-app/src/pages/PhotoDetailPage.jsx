@@ -54,6 +54,46 @@ function PhotoDetailPage() {
             .catch(err => console.error(err));
     };
 
+    const handleDelete = () => {
+        if (!window.confirm("Are you sure you want to delete this photo?")) return;
+
+        fetch(`http://localhost:8080/api/photos/${photo.id}`, {
+            method: "DELETE"
+        })
+            .then(res => {
+                if (res.ok) {
+                    alert("Deleted successfully");
+                    navigate("/gallery");
+                } else {
+                    alert("Failed to delete");
+                }
+            })
+            .catch(err => console.error(err));
+    };
+
+    const handleEdit = () => {
+        const newTitle = prompt("Enter new title:", photo.title);
+        if (newTitle === null) return; // Cancelled
+
+        const newContent = prompt("Enter new content:", photo.content || "");
+        if (newContent === null) return; // Cancelled
+
+        fetch(`http://localhost:8080/api/photos/${photo.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: newTitle, content: newContent })
+        })
+            .then(async res => {
+                if (res.ok) {
+                    const updated = await res.json();
+                    setPhoto(updated);
+                } else {
+                    alert("Failed to update");
+                }
+            })
+            .catch(err => console.error(err));
+    };
+
     if (!photo) return <div className="ba-container">Loading...</div>;
 
     // Hybrid URL handling: specific check if it's S3 (starts with http) or local
@@ -68,7 +108,17 @@ function PhotoDetailPage() {
             </button>
 
             <div className="ba-card" style={{ padding: '20px' }}>
-                <h1 style={{ marginBottom: '10px', color: 'var(--ba-cyan)' }}>{photo.title}</h1>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <h1 style={{ color: 'var(--ba-cyan)', margin: 0 }}>{photo.title}</h1>
+
+                    {user && photo.author && user.userId == photo.author.id && (
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <button onClick={handleEdit} className="ba-btn" style={{ fontSize: '0.8rem', padding: '5px 10px', background: 'var(--ba-purple)' }}>Edit</button>
+                            <button onClick={handleDelete} className="ba-btn" style={{ fontSize: '0.8rem', padding: '5px 10px', background: 'var(--ba-pink)' }}>Delete</button>
+                        </div>
+                    )}
+                </div>
+
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#B2BEC3', marginBottom: '20px', borderBottom: '1px solid var(--ba-grey)', paddingBottom: '10px' }}>
                     <span>By {photo.author ? photo.author.username : 'Unknown'}</span>
                     <span>{new Date(photo.uploadedAt).toLocaleString()}</span>

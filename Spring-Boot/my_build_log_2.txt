@@ -1,0 +1,33 @@
+
+> Task :compileJava
+C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\PhotoLikeRepository.java:10: error: class, interface, enum, or record expected
+SELECT * FROM .. user = ? and photo = ?
+^
+C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\PhotoLikeRepository.java:10: error: illegal '.'
+SELECT * FROM .. user = ? and photo = ?
+               ^
+2 errors
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/yoons/OneDrive/%EB%AC%B8%EC%84%9C/GitHub/FullStack-FrameWork-Study/Spring-Boot/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\PhotoLikeRepository.java:10: error: class, interface, enum, or record expected
+  SELECT * FROM .. user = ? and photo = ?
+  ^
+  C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\PhotoLikeRepository.java:10: error: illegal '.'
+  SELECT * FROM .. user = ? and photo = ?
+                 ^
+  2 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 32s
+1 actionable task: 1 executed

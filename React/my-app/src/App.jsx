@@ -1,3 +1,4 @@
+// 메인 컴포넌트 라우팅 설정 담당
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
@@ -7,6 +8,7 @@ import UploadPage from './pages/UploadPage';
 import PhotoDetailPage from './pages/PhotoDetailPage';
 import MusicPlayer from './components/MusicPlayer';
 import Header from './components/Header';
+import FloatingWriteButton from './components/FloatingWriteButton';
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
         <MusicPlayer />
+        <FloatingWriteButton />
       </div>
     </Router>
   );

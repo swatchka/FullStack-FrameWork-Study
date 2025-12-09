@@ -1,0 +1,35 @@
+
+> Task :compileJava FAILED
+C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\S3Service.java:3: error: package io.awspring.cloud.s3 does not exist
+import io.awspring.cloud.s3.S3Template;
+                           ^
+C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\S3Service.java:15: error: cannot find symbol
+    private S3Template s3Template;
+            ^
+  symbol:   class S3Template
+  location: class S3Service
+2 errors
+
+[Incubating] Problems report is available at: file:///C:/Users/yoons/OneDrive/%EB%AC%B8%EC%84%9C/GitHub/FullStack-FrameWork-Study/Spring-Boot/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\S3Service.java:15: error: cannot find symbol
+      private S3Template s3Template;
+              ^
+    symbol:   class S3Template
+    location: class S3Service
+  C:\Users\yoons\OneDrive\문서\GitHub\FullStack-FrameWork-Study\Spring-Boot\src\main\java\com\example\demo\S3Service.java:3: error: package io.awspring.cloud.s3 does not exist
+  import io.awspring.cloud.s3.S3Template;
+                             ^
+  2 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to generate a Build Scan (powered by Develocity).
+
+BUILD FAILED in 2s
+1 actionable task: 1 executed

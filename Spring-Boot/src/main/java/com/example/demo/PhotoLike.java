@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "photo_id"}))

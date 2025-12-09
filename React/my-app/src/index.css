@@ -11,6 +11,9 @@
   /* Almost black background */
   --ba-white: #2C2C30;
   /* Dark cards */
+  --ba-purple: #9B59B6;
+  --ba-pink: #D72638;
+  /* Recycling the red for delete/pink variable */
   --ba-font: 'Inter', system-ui, -apple-system, sans-serif;
   --ba-title-font: 'Black Ops One', system-ui;
   /* Rugged Stencil Font */
