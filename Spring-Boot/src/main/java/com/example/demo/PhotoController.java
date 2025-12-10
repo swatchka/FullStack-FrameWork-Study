@@ -41,25 +41,41 @@ public class PhotoController {
         return photoRepository.findAllByOrderByUploadedAtDesc();
     }
 
+
+    @PostMapping("/presigned-url")
+    public ResponseEntity<Map<String, String>> getPresignedUrl(@RequestBody Map<String, String> payload) {
+        String filename = payload.get("filename");
+        String contentType = payload.get("contentType"); // e.g., image/jpeg
+        
+        if (filename == null || contentType == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(s3Service.getPresignedUrl(filename, contentType));
+    }
+
     @PostMapping
-    public ResponseEntity<?> uploadPhoto(@RequestParam("file") MultipartFile file,
-            @RequestParam("title") String title,
-            @RequestParam("userId") Long userId,
-            @RequestParam(value = "content", required = false) String content) {
+    public ResponseEntity<?> uploadPhotoMetadata(@RequestBody Map<String, Object> payload) {
+        String title = (String) payload.get("title");
+        String content = (String) payload.get("content");
+        String fileUrl = (String) payload.get("fileUrl");
+        // We handle userId as String or Integer from JSON, safest to parse
+        Long userId = Long.valueOf(String.valueOf(payload.get("userId")));
+
+        if (title == null || fileUrl == null || userId == null) {
+            return ResponseEntity.badRequest().body("Missing required fields");
+        }
+
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
 
-        // Upload to S3
-        String fileUrl = s3Service.uploadFile(file); // S3에 업로드
-
-        // Save full URL to DB as fileName
+        // Just save to DB, file is already in S3
         Photo photo = new Photo(title, fileUrl, userOptional.get(), content);
         photoRepository.save(photo);
-        photoRepository.save(photo);
 
-        return ResponseEntity.ok("Photo uploaded successfully!");
+        return ResponseEntity.ok("Photo metadata saved successfully!");
     }
 
     @PostMapping("/{id}/like")

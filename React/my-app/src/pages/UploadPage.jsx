@@ -7,7 +7,7 @@ function UploadPage() {
     const [content, setContent] = useState(""); // Text content state
     const [file, setFile] = useState(null);
 
-    const handleUpload = (e) => {
+    const handleUpload = async (e) => {
         e.preventDefault();
         const user = JSON.parse(localStorage.getItem("user"));
         if (!user) {
@@ -21,28 +21,53 @@ function UploadPage() {
             return;
         }
 
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("title", title);
-        formData.append("content", content); // Append content
-        formData.append("userId", user.userId);
-
-        fetch("http://localhost:8080/api/photos", {
-            method: "POST",
-            body: formData,
-        })
-            .then((res) => {
-                if (res.ok) {
-                    alert("Upload successful!");
-                    navigate("/gallery");
-                } else {
-                    res.text().then(text => alert("Upload failed: " + text));
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-                alert("Error uploading file.");
+        try {
+            // Step 1: Request Presigned URL
+            const preRes = await fetch("http://localhost:8080/api/photos/presigned-url", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    filename: file.name,
+                    contentType: file.type
+                })
             });
+
+            if (!preRes.ok) throw new Error("Failed to get upload URL");
+            const { presignedUrl, fileUrl } = await preRes.json();
+
+            // Step 2: Upload to S3 directly
+            const uploadRes = await fetch(presignedUrl, {
+                method: "PUT",
+                headers: { "Content-Type": file.type },
+                body: file
+            });
+
+            if (!uploadRes.ok) throw new Error("Failed to upload file to S3");
+
+            // Step 3: Save metadata to Backend
+            const saveRes = await fetch("http://localhost:8080/api/photos", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: title,
+                    content: content,
+                    userId: user.userId,
+                    fileUrl: fileUrl
+                })
+            });
+
+            if (saveRes.ok) {
+                alert("Upload successful!");
+                navigate("/gallery");
+            } else {
+                const text = await saveRes.text();
+                alert("Upload failed: " + text);
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert("Error uploading file: " + err.message);
+        }
     };
 
     return (
