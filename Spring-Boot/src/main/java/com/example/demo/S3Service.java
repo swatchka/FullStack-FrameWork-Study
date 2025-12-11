@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
@@ -69,5 +72,21 @@ public class S3Service {
         result.put("fileUrl", "https://" + bucketName + ".s3.ap-northeast-2.amazonaws.com/" + fileName); 
         
         return result;
+    }
+    // New: Generate Presigned URL for Download (Music Playback)
+    public String getPresignedUrlForDownload(String fileName) {
+        GetObjectRequest objectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+
+        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(10)) // 10 minutes access
+                .getObjectRequest(objectRequest)
+                .build();
+
+        PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
+
+        return presignedRequest.url().toString();
     }
 }

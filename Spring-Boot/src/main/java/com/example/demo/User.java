@@ -8,7 +8,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "users") // 'user' is often a reserved keyword in DBs
+@Table(name = "app_users") // 'user' and 'users' are reserved keywords in H2/Postgres
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-// Define playlist
+// Define playlist with filenames instead of full URLs
 const PLAYLIST = [
-    { title: "It's going down", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm1.mp3" },
-    { title: "Unwelcome School", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm2.mp3" },
-    { title: "Constant Moderato", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm3.mp3" },
-    { title: "Shelter", file: "https://swatchka-archive.s3.ap-northeast-2.amazonaws.com/bgm4.mp3" }
+    { title: "It's going down", filename: "bgm1.mp3" },
+    { title: "Unwelcome School", filename: "bgm2.mp3" },
+    { title: "Constant Moderato", filename: "bgm3.mp3" },
+    { title: "Shelter", filename: "bgm4.mp3" }
 ];
 
 function MusicPlayer() {
@@ -16,19 +16,48 @@ function MusicPlayer() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5);
     const [isPlaylistOpen, setIsPlaylistOpen] = useState(false);
+    const [audioSrc, setAudioSrc] = useState(""); // State for dynamic URL
 
     const audioRef = useRef(null);
 
-    // Play/Pause effect
+    // Fetch Presigned URL when track changes
     useEffect(() => {
-        if (audioRef.current) {
+        const fetchUrl = async () => {
+            try {
+                const filename = PLAYLIST[currentTrackIndex].filename;
+                const response = await fetch(`http://localhost:8080/api/music/play?filename=${filename}`);
+                if (!response.ok) throw new Error("Failed to fetch music URL");
+
+                const data = await response.json();
+                setAudioSrc(data.url);
+
+                // Auto play if already playing (or first load if desired, but blocking auto-play policies exist)
+                if (isPlaying && audioRef.current) {
+                    // Need to wait for src to update, but React state update might delay.
+                    // The audio element will reload when src changes.
+                    // We rely on the play/pause effect below.
+                }
+            } catch (error) {
+                console.error("Error fetching music URL:", error);
+            }
+        };
+
+        fetchUrl();
+    }, [currentTrackIndex]);
+
+    // Play/Pause effect - dependent on audioSrc updates too
+    useEffect(() => {
+        if (audioRef.current && audioSrc) {
             if (isPlaying) {
-                audioRef.current.play().catch(e => console.log("Auto-play blocked", e));
+                const playPromise = audioRef.current.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => console.log("Auto-play blocked or waiting for source", e));
+                }
             } else {
                 audioRef.current.pause();
             }
         }
-    }, [isPlaying, currentTrackIndex]);
+    }, [isPlaying, currentTrackIndex, audioSrc]);
 
     // Volume effect
     useEffect(() => {
@@ -165,7 +194,7 @@ function MusicPlayer() {
                 {/* Audio Element */}
                 <audio
                     ref={audioRef}
-                    src={currentTrack.file}
+                    src={audioSrc || ""}
                     onEnded={nextTrack}
                     loop={false}
                     onError={(e) => console.error("Audio error", e)}
@@ -240,5 +269,4 @@ function MusicPlayer() {
         </div>
     );
 }
-
 export default MusicPlayer;
